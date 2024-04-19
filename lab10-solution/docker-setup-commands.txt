@@ -1,0 +1,18 @@
+Docker setup commands:
+
+mvn compile 
+mvn clean package
+docker build -t helloworld-java-cli-app .
+docker images --all //show list of existing images
+docker ps --all //show list of existing containers
+docker images --all
+docker run helloworld-java-cli-app:latest
+
+
+---------------------------------------------------------
+
+
+AdsRESTApplication-0.0.1-SNAPSHOT.jar
+mvn compile 
+mvn clean package
+docker build -t ads-rest-app .
