@@ -10,6 +10,9 @@ import miu.edu.cs489.adsrestapplication.repository.PatientRepository;
 import miu.edu.cs489.adsrestapplication.service.interfaces.PatientService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,14 +34,14 @@ public class PatientServiceImp implements PatientService {
                         patientRequest.addressRequest().state(),
                         patientRequest.addressRequest().zipCode(),
                         patientRequest.addressRequest().apt()
-                ));
+                ),
+        LocalDate.now());
         Patient savedPatient = patientRepository.save(newPatient);
         return new PatientResponse(
                 savedPatient.getPatientId(),
                 savedPatient.getPatName(),
                 savedPatient.getPhone(),
                 savedPatient.getEmail(),
-                savedPatient.getBirthDate(),
                 new AddressResponse(
                         savedPatient.getPatientAddress().getAddressId(),
                         savedPatient.getPatientAddress().getStreet(),
@@ -46,7 +49,8 @@ public class PatientServiceImp implements PatientService {
                         savedPatient.getPatientAddress().getState(),
                         savedPatient.getPatientAddress().getZipCode(),
                         savedPatient.getPatientAddress().getApt()
-                )
+                ),
+                savedPatient.getBirthDate()
         );
     }
     @Override
@@ -82,12 +86,10 @@ public class PatientServiceImp implements PatientService {
     }
 
     @Override
-    public Patient getPatientById(Integer idPatient) throws PatientNotFoundException {
-        return this.patientRepository.findById(idPatient)
+    public Patient getPatientById(Integer patientId) throws PatientNotFoundException {
+        return this.patientRepository.findById(patientId)
                 .orElseThrow(() ->
-                        new PatientNotFoundException(String.format("Error: Publisher with Id, %d, is not found",
-                        idPatient
-                        ))
+                        new PatientNotFoundException(String.format("Error: Patient with Id, %d, is not found", patientId))
                 );
     }
 
@@ -110,7 +112,6 @@ public class PatientServiceImp implements PatientService {
                         p.getPatName(),
                         p.getPhone(),
                         p.getEmail(),
-                        p.getBirthDate(),
                         (p.getPatientAddress() != null)? new AddressResponse(
                                 p.getPatientAddress().getAddressId(),
                                 p.getPatientAddress().getStreet(),
@@ -118,7 +119,8 @@ public class PatientServiceImp implements PatientService {
                                 p.getPatientAddress().getState(),
                                 p.getPatientAddress().getZipCode(),
                                 p.getPatientAddress().getApt()
-                        ):null
+                        ):null,
+                        p.getBirthDate()
                 )).toList();
     }
 

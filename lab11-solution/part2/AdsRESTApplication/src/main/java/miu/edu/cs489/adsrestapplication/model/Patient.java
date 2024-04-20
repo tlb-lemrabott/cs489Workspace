@@ -10,6 +10,7 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -24,8 +25,8 @@ public class Patient {
     private String patName;
     private String phone;
     private String email;
-//    @Temporal(TemporalType.TIMESTAMP)
-    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     //@DateTimeFormat(pattern = "yyyy-mm-dd hh:mm:ss")
     private LocalDate birthDate;
@@ -36,6 +37,15 @@ public class Patient {
         this.phone = phone;
         this.email = email;
         this.patientAddress = patientAddress;
+    }
+
+    public Patient(Integer patientId, String patName, String phone, String email, Address patientAddress, LocalDate birthDate) {
+        this.patientId = patientId;
+        this.patName = patName;
+        this.phone = phone;
+        this.email = email;
+        this.patientAddress = patientAddress;
+        this.birthDate = birthDate;
     }
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

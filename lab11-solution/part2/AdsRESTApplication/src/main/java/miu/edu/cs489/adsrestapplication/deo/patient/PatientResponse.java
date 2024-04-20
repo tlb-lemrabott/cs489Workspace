@@ -9,7 +9,7 @@ public record PatientResponse (
         String patName,
         String phone,
         String email,
-        LocalDate birthDate,
-        AddressResponse patientAddress
+        AddressResponse patientAddress,
+        LocalDate birthDate
 ){
 }
